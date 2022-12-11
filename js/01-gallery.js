@@ -3,13 +3,38 @@ import { galleryItems } from "./gallery-items.js";
 
 console.log(galleryItems);
 
-// /* <div class="gallery__item">
-//   <a class="gallery__link" href="large-image.jpg">
-//     <img
-//       class="gallery__image"
-//       src="small-image.jpg"
-//       data-source="large-image.jpg"
-//       alt="Image description"
-//     />
-//   </a>
-// </div>; */
+const gallery = document.querySelector(".gallery");
+const galleryImgEl = document.querySelector(".gallery__image");
+
+function createGalleryMarkup(galleryItems) {
+  const markup = galleryItems
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
+  <a class="gallery__link" href="large-image.jpg">
+    <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</div>`;
+    })
+    .join("");
+  return markup;
+}
+
+const galleryMarkup = createGalleryMarkup(galleryItems);
+
+gallery.insertAdjacentHTML("beforeend", galleryMarkup);
+
+gallery.addEventListener("click", openOriginalImg);
+
+function openOriginalImg(evt) {
+  evt.preventDefault();
+  const isGalleryImg = evt.target.classList.contains("gallery__image");
+  if (!isGalleryImg) {
+    return;
+  }
+  console.log(evt.target);
+}
